@@ -273,7 +273,7 @@ class Main(object):
         self.student_account_frame.setWindowTitle("Create Student Account")
         self.student_account_frame.setFixedSize(1200, 500)
         self.student_account_frame.move(100, 20)
-        self.student_account_frame.setPixmap(QtGui.QPixmap(r"Application Pictures and Icons\Login Screen Background.png"))
+        self.student_account_frame.setPixmap(QtGui.QPixmap(r"Application Pictures and Icons\Login Screen Background.png").scaledToWidth(1200))
 
         self.student_account_label = self.create_QLabel("student_account_frame", "student_account_label",
                                                         "Create Student Account", 20, 20, 600, 50)
@@ -316,14 +316,14 @@ class Main(object):
         self.birthday_entry.setPlaceholderText("Birthday (MM/DD/YY)")
 
         self.school_label = self.create_QLabel("student_account_frame", "school_label",
-                                               "School", 400, 200, 300, 30)
+                                               "School", 370, 200, 300, 30)
 
         self.school_entry = QtWidgets.QLineEdit(self.student_account_frame)
-        self.school_entry.setGeometry(QtCore.QRect(480, 200, 200, 30))
+        self.school_entry.setGeometry(QtCore.QRect(430, 200, 200, 30))
         self.school_entry.setPlaceholderText("School")
 
         self.grade_combobox = QComboBox(self.student_account_frame)
-        self.grade_combobox.setGeometry(690, 200, 100, 30)
+        self.grade_combobox.setGeometry(640, 200, 110, 30)
         self.grade_combobox.addItem("Choose Grade")
         self.grade_combobox.addItem("9")
         self.grade_combobox.addItem("10")
@@ -332,7 +332,7 @@ class Main(object):
         self.grade_combobox.setCurrentIndex(0)
 
         self.security_combobox_label = self.create_QLabel("student_account_frame", "security_combobox_label",
-                                                          "Security Question", 400, 280, 300, 30)
+                                                          "Security Question", 370, 280, 300, 30)
 
         self.security_combobox = QComboBox(self.student_account_frame)
         self.security_combobox.setGeometry(550, 280, 200, 30)
@@ -344,7 +344,7 @@ class Main(object):
         self.security_combobox.setCurrentIndex(0)
 
         self.create_answer_label = self.create_QLabel("student_account_frame", "create_answer_label",
-                                                      "Answer", 450, 360, 300, 30)
+                                                      "Answer", 370, 360, 300, 30)
 
         self.create_answer_entry = QtWidgets.QLineEdit(self.student_account_frame)
         self.create_answer_entry.setGeometry(QtCore.QRect(550, 360, 200, 30))
@@ -372,7 +372,7 @@ class Main(object):
         self.emergency_email_entry.setPlaceholderText("Emergency Email")
 
         self.gender_label = self.create_QLabel("student_account_frame", "gender_label",
-                                               "Gender", 890, 360, 300, 30)
+                                               "Gender", 800, 360, 300, 30)
 
         self.gender_combobox = QComboBox(self.student_account_frame)
         self.gender_combobox.setGeometry(960, 360, 200, 30)
@@ -384,9 +384,10 @@ class Main(object):
         self.gender_combobox.setCurrentIndex(0)
 
         self.create_account_button = QtWidgets.QPushButton("Create Account", self.student_account_frame)
-        self.create_account_button.setGeometry(QtCore.QRect(320, 430, 260, 30))
+        self.create_account_button.setGeometry(QtCore.QRect(460, 430, 260, 30))
         self.create_account_button.clicked.connect(self.create_student_account)
-        self.create_account_button.setStyleSheet(SEND_BUTTON_STYLESHEET)
+        #self.create_account_button.setStyleSheet(SEND_BUTTON_STYLESHEET)
+        self.create_account_button.setObjectName("student_login_button")
 
         self.student_account_frame.show()
 
@@ -605,7 +606,8 @@ class Main(object):
         self.create_account_button = QtWidgets.QPushButton("Create Account", self.admin_account_frame)
         self.create_account_button.setGeometry(QtCore.QRect(320, 430, 260, 30))
         self.create_account_button.clicked.connect(self.create_admin_account)
-        self.create_account_button.setStyleSheet(SEND_BUTTON_STYLESHEET)
+        #self.create_account_button.setStyleSheet(SEND_BUTTON_STYLESHEET)
+        self.create_account_button.setObjectName("student_login_button")
 
         self.admin_account_frame.show()
 
@@ -829,9 +831,10 @@ class Main(object):
     def initialize_administrator_page(self):
         self.login_central_widget.deleteLater()
         main_window.setFixedSize(1150, 650)
-        self.central_widget = QtWidgets.QWidget(main_window)
+        self.central_widget = QtWidgets.QLabel(main_window)
         self.central_widget.setObjectName("central_widget")
         self.central_widget.resize(1150, 650)
+        self.central_widget.setPixmap(QtGui.QPixmap("Application Pictures and Icons/589.jpg"))
 
         self.tab_widget_panel = QtWidgets.QLabel(self.central_widget)
         self.tab_widget_panel.resize(178,650)
