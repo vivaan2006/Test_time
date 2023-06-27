@@ -62,11 +62,12 @@ QFrame#login_screen_elements {
 /* HOME PAGE */
 QLabel#intro_label {
     color: #FFFFFF;
-    font: bold 32px;
+    font-family: Roboto;
+    font: bold 28px;
 }
 
 QWidget#central_widget {
-    background-color: rgb(41, 89, 143);
+    background-color: #4C4C4C;
 }
 
 QWidget#tab_widget {
@@ -209,46 +210,59 @@ QLabel#new_password_label {
     font: bold 20px;
 }
 QLabel#student_account_label {
-    font: bold 30px
+    font: bold 30px;
+    color:white;
 }
 QFrame#student_account_line {
     background-color: black;
 }
 QLabel#first_name_label {
-    font: bold 15px
+    font: bold 15px;
+    color:white;
 }
 QLabel#last_name_label {
-    font: bold 15px
+    font: bold 15px;
+    color:white;
 }
 QLabel#create_email_label {
     font: bold 15px;
+    color:white;
 }
 QLabel#create_password_label {
     font: bold 15px;
+    color:white;
 }
 QLabel#birthday_label {
     font: bold 15px;
+    color:white;
 }
 QLabel#school_label {
     font: bold 15px;
+    color:white;
 }
 QLabel#security_combobox_label {
-    font: bold 15px
+    font: bold 15px;
+    color:white;
 }
 QLabel#create_answer_label {
     font: bold 15px;
+    color:white;
 }
 QLabel#emergency_name_label {
     font: bold 15px;
+    color:white;
 }
 QLabel#emergency_phone_label {
     font: bold 15px;
+    color:white;
 }
 QLabel#emergency_email_label {
     font: bold 15px;
+    color:white;
 }
 QLabel#gender_label {
     font: bold 15px;
+    color:white;
 }
 QLabel#past_purchases_label {
     font: bold 22px;

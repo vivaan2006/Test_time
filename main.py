@@ -12,7 +12,7 @@ import canvas as canvas
 import folium
 import numpy as np
 from PyQt5 import QtGui, QtCore, QtWidgets, QtWebEngineWidgets, QtPrintSupport
-from PyQt5.QtCore import Qt, QRunnable, pyqtSlot, QThreadPool, QUrl
+from PyQt5.QtCore import Qt, QRunnable, pyqtSlot, QThreadPool, QUrl, QSize
 from PyQt5.QtGui import QIcon, QPixmap, QFont, QDesktopServices, QPainter, QPainterPath, QTextOption
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 from PyQt5.QtWidgets import *
@@ -29,6 +29,60 @@ from openpyxl import Workbook
 
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
+
+REDEEM_BUTTON_STYLESHEET = '''
+                        QPushButton {
+                            background-color: rgb(12, 96, 50);
+                            color: white;
+                            border-radius:10px; 
+                            font-size:10pt
+                        }
+
+                        QPushButton:hover {
+                            background-color: gray;
+                        }
+                    '''
+
+PROFILE_BUTTON_STYLESHEET = '''
+                        QPushButton {
+                            background-color: rgb(12, 96, 50);
+                            color: white;
+                            border-radius:25px; 
+                            font-size:10pt
+                        }
+
+                        QPushButton:hover {
+                            background-color: gray;
+                        }
+                    '''
+
+SEND_BUTTON_STYLESHEET = '''
+                        QPushButton {
+                            background-color: rgb(12, 96, 50);
+                            color: white;
+                            border-radius:15px; 
+                            font-size:10pt
+                        }
+
+                        QPushButton:hover {
+                            background-color: gray;
+                        }
+                    '''
+
+RESOLVED_BUTTON_STYLESHEET = '''
+                        QPushButton {
+                            background-color: rgb(12, 96, 50);
+                            color: white;
+                            border-radius:10px; 
+                            font-size:10pt
+                        }
+
+                        QPushButton:hover {
+                            background-color: gray;
+                        }
+                    '''
+
+
 
 sqliteConnection = sqlite3.connect('identifier.sqlite')
 cursor = sqliteConnection.cursor()
@@ -105,6 +159,8 @@ class Main(object):
     def setup_window(self, main_window):
         main_window.setWindowTitle("Spirit Quest")
         main_window.setObjectName("main_window")
+        icon = QIcon("Application Pictures and Icons\gold-medal.png")
+        main_window.setWindowIcon(icon)
         main_window.setFixedSize(800, 500)
         self.setup_login_screen(main_window)
 
@@ -119,8 +175,7 @@ class Main(object):
         self.login_central_widget.resize(800, 500)
         self.login_screen_background = QtWidgets.QLabel(self.login_central_widget)
         self.login_screen_background.setFixedSize(810, 500)
-        self.login_screen_background.setPixmap(
-            QtGui.QPixmap("Application Pictures and Icons/Login Screen Background.png"))
+        self.login_screen_background.setPixmap(QtGui.QPixmap(r"Application Pictures and Icons\Login Screen Background.png"))
 
         self.login_screen_background.setScaledContents(True)
         self.login_screen_background.show()
@@ -214,51 +269,58 @@ class Main(object):
         main_window.setStatusBar(None)
 
     def setup_student_account_creation(self):
-        self.student_account_frame = QtWidgets.QFrame()
+        self.student_account_frame = QtWidgets.QLabel()
         self.student_account_frame.setWindowTitle("Create Student Account")
         self.student_account_frame.setFixedSize(1200, 500)
         self.student_account_frame.move(100, 20)
+        self.student_account_frame.setPixmap(QtGui.QPixmap(r"Application Pictures and Icons\Login Screen Background.png"))
 
         self.student_account_label = self.create_QLabel("student_account_frame", "student_account_label",
                                                         "Create Student Account", 20, 20, 600, 50)
         self.student_account_line = self.create_QFrame("student_account_frame", "student_account_line", "HLine", 10, 65,
-                                                       600, 6)
+                                                       600, 0)
 
         self.first_name_label = self.create_QLabel("student_account_frame", "first_name_label",
                                                    "First Name", 50, 120, 300, 30)
 
         self.first_name_entry = QtWidgets.QLineEdit(self.student_account_frame)
         self.first_name_entry.setGeometry(QtCore.QRect(150, 120, 200, 30))
+        self.first_name_entry.setPlaceholderText("First Name")
 
         self.last_name_label = self.create_QLabel("student_account_frame", "last_name_label",
                                                   "Last Name", 55, 200, 300, 30)
 
         self.username_entry = QtWidgets.QLineEdit(self.student_account_frame)
         self.username_entry.setGeometry(QtCore.QRect(150, 200, 200, 30))
+        self.username_entry.setPlaceholderText("Last Name")
 
         self.create_email_label = self.create_QLabel("student_account_frame", "create_email_label",
                                                      "Email Address", 40, 280, 300, 30)
 
         self.create_email_entry = QtWidgets.QLineEdit(self.student_account_frame)
         self.create_email_entry.setGeometry(QtCore.QRect(150, 280, 200, 30))
+        self.create_email_entry.setPlaceholderText("Email Address")
 
         self.create_password_label = self.create_QLabel("student_account_frame", "create_password_label",
                                                         "Password", 55, 360, 300, 30)
 
         self.create_password_entry = QtWidgets.QLineEdit(self.student_account_frame)
         self.create_password_entry.setGeometry(QtCore.QRect(150, 360, 200, 30))
+        self.create_password_entry.setPlaceholderText("Password")
 
         self.birthday_label = self.create_QLabel("student_account_frame", "birthday_label",
                                                  "Birthday (MM/DD/YY)", 370, 120, 300, 30)
 
         self.birthday_entry = QtWidgets.QLineEdit(self.student_account_frame)
         self.birthday_entry.setGeometry(QtCore.QRect(550, 120, 200, 30))
+        self.birthday_entry.setPlaceholderText("Birthday (MM/DD/YY)")
 
         self.school_label = self.create_QLabel("student_account_frame", "school_label",
                                                "School", 400, 200, 300, 30)
 
         self.school_entry = QtWidgets.QLineEdit(self.student_account_frame)
         self.school_entry.setGeometry(QtCore.QRect(480, 200, 200, 30))
+        self.school_entry.setPlaceholderText("School")
 
         self.grade_combobox = QComboBox(self.student_account_frame)
         self.grade_combobox.setGeometry(690, 200, 100, 30)
@@ -286,24 +348,28 @@ class Main(object):
 
         self.create_answer_entry = QtWidgets.QLineEdit(self.student_account_frame)
         self.create_answer_entry.setGeometry(QtCore.QRect(550, 360, 200, 30))
+        self.create_answer_entry.setPlaceholderText("Answer")
 
         self.emergency_name_label = self.create_QLabel("student_account_frame", "emergency_name_label",
                                                        "Emergency Name", 800, 120, 300, 30)
 
         self.emergency_name_entry = QtWidgets.QLineEdit(self.student_account_frame)
         self.emergency_name_entry.setGeometry(QtCore.QRect(960, 120, 200, 30))
+        self.emergency_name_entry.setPlaceholderText("Emergency Name")
 
         self.emergency_phone_label = self.create_QLabel("student_account_frame", "emergency_phone_label",
                                                         "Emergency Phone", 800, 200, 300, 30)
 
         self.emergency_phone_entry = QtWidgets.QLineEdit(self.student_account_frame)
         self.emergency_phone_entry.setGeometry(QtCore.QRect(960, 200, 200, 30))
+        self.emergency_phone_entry.setPlaceholderText("Emergency Phone")
 
         self.emergency_email_label = self.create_QLabel("student_account_frame", "emergency_email_label",
                                                         "Emergency Email", 800, 280, 300, 30)
 
         self.emergency_email_entry = QtWidgets.QLineEdit(self.student_account_frame)
         self.emergency_email_entry.setGeometry(QtCore.QRect(960, 280, 200, 30))
+        self.emergency_email_entry.setPlaceholderText("Emergency Email")
 
         self.gender_label = self.create_QLabel("student_account_frame", "gender_label",
                                                "Gender", 890, 360, 300, 30)
@@ -320,6 +386,7 @@ class Main(object):
         self.create_account_button = QtWidgets.QPushButton("Create Account", self.student_account_frame)
         self.create_account_button.setGeometry(QtCore.QRect(320, 430, 260, 30))
         self.create_account_button.clicked.connect(self.create_student_account)
+        self.create_account_button.setStyleSheet(SEND_BUTTON_STYLESHEET)
 
         self.student_account_frame.show()
 
@@ -453,15 +520,17 @@ class Main(object):
                 wrong_answer.exec_()
 
     def setup_administrator_account_creation(self):
-        self.admin_account_frame = QtWidgets.QFrame()
+        self.admin_account_frame = QtWidgets.QLabel()
         self.admin_account_frame.setWindowTitle("Create Administrator Account")
         self.admin_account_frame.setFixedSize(800, 500)
+        self.admin_account_frame.setPixmap(QPixmap(r"Application Pictures and Icons\Login Screen Background.png").scaledToWidth(800))
         self.admin_account_frame.move(100, 20)
 
         self.student_account_label = self.create_QLabel("admin_account_frame", "student_account_label",
-                                                        "Create Administrator Account", 20, 20, 600, 50)
+                                                        "Create Administrator Account", 160, 20, 600, 50)
         self.student_account_line = self.create_QFrame("admin_account_frame", "student_account_line", "HLine", 10, 65,
-                                                       600, 6)
+                                                       600, 0)
+        #self.student_account_label.setStyleSheet("font-family:Roboto; color: white")
 
         self.first_name_label = self.create_QLabel("admin_account_frame", "first_name_label",
                                                    "First Name", 50, 120, 300, 30)
@@ -474,36 +543,42 @@ class Main(object):
 
         self.first_name_entry = QtWidgets.QLineEdit(self.admin_account_frame)
         self.first_name_entry.setGeometry(QtCore.QRect(150, 120, 200, 30))
+        self.first_name_entry.setPlaceholderText("First Name")
 
         self.last_name_label = self.create_QLabel("admin_account_frame", "last_name_label",
                                                   "Last Name", 55, 200, 300, 30)
 
         self.username_entry = QtWidgets.QLineEdit(self.admin_account_frame)
         self.username_entry.setGeometry(QtCore.QRect(150, 200, 200, 30))
+        self.username_entry.setPlaceholderText("Last Name")
 
         self.create_email_label = self.create_QLabel("admin_account_frame", "create_email_label",
                                                      "Email Address", 40, 280, 300, 30)
 
         self.create_email_entry = QtWidgets.QLineEdit(self.admin_account_frame)
         self.create_email_entry.setGeometry(QtCore.QRect(150, 280, 200, 30))
+        self.create_email_entry.setPlaceholderText("Email Address")
 
         self.create_password_label = self.create_QLabel("admin_account_frame", "create_password_label",
                                                         "Password", 55, 360, 300, 30)
 
         self.create_password_entry = QtWidgets.QLineEdit(self.admin_account_frame)
         self.create_password_entry.setGeometry(QtCore.QRect(150, 360, 200, 30))
+        self.create_password_entry.setPlaceholderText("Password")
 
         self.birthday_label = self.create_QLabel("admin_account_frame", "birthday_label",
                                                  "Birthday (MM/DD/YY)", 370, 120, 300, 30)
 
         self.birthday_entry = QtWidgets.QLineEdit(self.admin_account_frame)
         self.birthday_entry.setGeometry(QtCore.QRect(550, 120, 200, 30))
+        self.birthday_entry.setPlaceholderText("Birthday (MM/DD/YY)")
 
         self.school_label = self.create_QLabel("admin_account_frame", "school_label",
                                                "School", 470, 200, 300, 30)
 
         self.school_entry = QtWidgets.QLineEdit(self.admin_account_frame)
         self.school_entry.setGeometry(QtCore.QRect(550, 200, 200, 30))
+        self.school_entry.setPlaceholderText("School")
 
         self.security_combobox_label = self.create_QLabel("admin_account_frame", "security_combobox_label",
                                                           "Security Question", 400, 280, 300, 30)
@@ -522,10 +597,12 @@ class Main(object):
 
         self.create_answer_entry = QtWidgets.QLineEdit(self.admin_account_frame)
         self.create_answer_entry.setGeometry(QtCore.QRect(550, 360, 200, 30))
+        self.create_answer_entry.setPlaceholderText("Answer")
 
         self.create_account_button = QtWidgets.QPushButton("Create Account", self.admin_account_frame)
         self.create_account_button.setGeometry(QtCore.QRect(320, 430, 260, 30))
         self.create_account_button.clicked.connect(self.create_admin_account)
+        self.create_account_button.setStyleSheet(SEND_BUTTON_STYLESHEET)
 
         self.admin_account_frame.show()
 
@@ -708,14 +785,20 @@ class Main(object):
         centerPoint = QDesktopWidget().availableGeometry().center()
         qtRectangle.moveCenter(centerPoint)
         main_window.move(qtRectangle.topLeft())
-        self.central_widget = QtWidgets.QWidget(main_window)
+        self.central_widget = QtWidgets.QLabel(main_window)
         self.central_widget.setObjectName("central_widget")
         self.central_widget.resize(1150, 650)  # resize
+        self.central_widget.setPixmap(QtGui.QPixmap("Application Pictures and Icons/589.jpg"))
+
+        self.tab_widget_panel = QtWidgets.QLabel(self.central_widget)
+        self.tab_widget_panel.resize(178,650)
+        self.tab_widget_panel.move(0,0)
+        self.tab_widget_panel.setStyleSheet("background-color:#202020")
 
         self.app_logo = QtWidgets.QLabel(self.central_widget)
         self.app_logo.setFixedSize(140, 140)
         self.app_logo.move(20, 10)
-        self.app_logo.setPixmap(QtGui.QPixmap("Application Pictures and Icons/Time Track Icon.png"))
+        self.app_logo.setPixmap(QtGui.QPixmap("Application Pictures and Icons/Time_Track_Icon-removebg-preview.png"))
         self.app_logo.setScaledContents(True)
         self.app_logo.show()
 
@@ -739,8 +822,8 @@ class Main(object):
 
         self.setup_student_page(first_name, last_name)
         main_window.setCentralWidget(self.central_widget)
-        self.status_bar = QtWidgets.QStatusBar(main_window)
-        main_window.setStatusBar(self.status_bar)
+        # self.status_bar = QtWidgets.QStatusBar(main_window)
+        # main_window.setStatusBar(self.status_bar)
 
     def initialize_administrator_page(self):
         self.login_central_widget.deleteLater()
@@ -749,10 +832,15 @@ class Main(object):
         self.central_widget.setObjectName("central_widget")
         self.central_widget.resize(1150, 650)
 
+        self.tab_widget_panel = QtWidgets.QLabel(self.central_widget)
+        self.tab_widget_panel.resize(178,650)
+        self.tab_widget_panel.move(0,0)
+        self.tab_widget_panel.setStyleSheet("background-color:#202020")
+
         self.app_logo = QtWidgets.QLabel(self.central_widget)
         self.app_logo.setFixedSize(140, 140)
         self.app_logo.move(20, 10)
-        self.app_logo.setPixmap(QtGui.QPixmap("Application Pictures and Icons/Time Track Icon.png"))
+        self.app_logo.setPixmap(QtGui.QPixmap("Application Pictures and Icons/Time_Track_Icon-removebg-preview.png"))
         self.app_logo.setScaledContents(True)
         self.app_logo.show()
 
@@ -764,8 +852,8 @@ class Main(object):
 
         self.setup_admin_page()
         main_window.setCentralWidget(self.central_widget)
-        self.status_bar = QtWidgets.QStatusBar(main_window)
-        main_window.setStatusBar(self.status_bar)
+        # self.status_bar = QtWidgets.QStatusBar(main_window)
+        # main_window.setStatusBar(self.status_bar)
 
     def setup_student_page(self, first_name, last_name):
         global dashboard_slideshow
@@ -782,7 +870,7 @@ class Main(object):
         self.tab_widget.resize(1150, 650)
         self.tab_widget.move(0, 55)
 
-        self.dashboard_tab = QtWidgets.QWidget()
+        self.dashboard_tab = QtWidgets.QLabel()
         self.upcoming_events_tab = QtWidgets.QWidget()
         self.maps_tab = QtWidgets.QWidget()
         self.points_tab = QtWidgets.QWidget()
@@ -792,20 +880,30 @@ class Main(object):
         self.chatbot_tab = QtWidgets.QWidget()
         self.faq_tab = QtWidgets.QWidget()
 
-        self.tab_widget.addTab(self.dashboard_tab, "Dashboard")
-        self.tab_widget.addTab(self.upcoming_events_tab, "Upcoming Events")
-        self.tab_widget.addTab(self.maps_tab, "Maps")
-        self.tab_widget.addTab(self.points_tab, "Points")
-        self.tab_widget.addTab(self.rewards_tab, "Rewards")
-        self.tab_widget.addTab(self.student_profile_tab, "My Student Profile")
-        self.tab_widget.addTab(self.faq_tab, "FAQs")
-        self.tab_widget.addTab(self.chatbot_tab, "Spirit Assistant")
+        # panel = QtWidgets.QLabel(self.dashboard_tab)
+        # panel.resize(1000,1000)
+        # #panel.setStyleSheet("background-color:rgb(20,20,20)")
+        # panel.setPixmap(QPixmap(r"C:\Users\lesli\OneDrive\Documents\GitHub\Test_time\Application Pictures and Icons\591.jpg").scaledToWidth(1000))
 
+        self.tab_widget.addTab(self.dashboard_tab, QIcon(r"Application Pictures and Icons\dashboard-solid-badged.svg"), "Dashboard          ")
+        self.tab_widget.addTab(self.upcoming_events_tab, QIcon(r"Application Pictures and Icons\calendar-fill.svg"), "Upcoming Events")
+        self.tab_widget.addTab(self.maps_tab, QIcon(r"Application Pictures and Icons\map.svg"), "Maps              ")
+        self.tab_widget.addTab(self.points_tab, QIcon(r"Application Pictures and Icons\crown-24-filled.svg"), "Points             ")
+        self.tab_widget.addTab(self.rewards_tab, QIcon(r"Application Pictures and Icons\reward-12-filled.svg"), "Rewards            ")
+        self.tab_widget.addTab(self.student_profile_tab, QIcon(r"Application Pictures and Icons\profile-fill.svg"), "My Student Profile")
+        self.tab_widget.addTab(self.faq_tab, QIcon(r"Application Pictures and Icons\question.svg"), "FAQs               ")
+        self.tab_widget.addTab(self.chatbot_tab, QIcon(r"Application Pictures and Icons\robot.svg"), "Spirit Assistant   ")
+
+        # pixmap = QPixmap("Application Pictures and Icons/user (3).png")
+        # self.user_icon_label = self.create_QLabel("central_widget", "user_icon_label",
+        #                                       "", 200, 0, 50, 50)
+        # self.user_icon_label.setPixmap(pixmap)
+        
         # Dashboard Tab
         self.intro_label = self.create_QLabel("central_widget", "intro_label",
-                                              "Signed in as " + first_name + " " + last_name, 200, 10, 600, 50)
+                                              "Signed in as " + first_name + " " + last_name, 200, 0, 600, 50)
         self.dashboard_label = self.create_QLabel("dashboard_tab", "dashboard_label", "Dashboard", 20, 20, 600, 50)
-        self.dashboard_title_line = self.create_QFrame("dashboard_tab", "dashboard_title_line", "HLine", 10, 65, 600, 6)
+        self.dashboard_title_line = self.create_QFrame("dashboard_tab", "dashboard_title_line", "HLine", 10, 65, 580, 6)
 
         pixmap = QPixmap("Application Pictures and Icons/bell_icon.png")
         icon = QIcon(pixmap)
@@ -820,7 +918,7 @@ class Main(object):
         dashboard_slideshow.setScaledContents(True)
         self.slideshow_description_groupbox = QtWidgets.QGroupBox(self.dashboard_tab)
         self.slideshow_description_groupbox.setGeometry(20, 420, 550, 110)  # 20, 580, 840, 100
-        self.slideshow_description_groupbox.setStyleSheet("QGroupBox { border-radius: 10px; }")
+        self.slideshow_description_groupbox.setStyleSheet("QGroupBox { border-radius: 3px; }")
         slideshow_title = self.create_QLabel("slideshow_description_groupbox", "slideshow_title", "", 10, 10, 530,
                                              30)  # 10, 10, 830, 20
         slideshow_title.setWordWrap(True)
@@ -878,12 +976,12 @@ class Main(object):
         self.upcoming_events_label = self.create_QLabel("upcoming_events_tab", "upcoming_events_label",
                                                         "Upcoming Events", 20, 20, 600, 50)
         self.upcoming_events_title_line = self.create_QFrame("upcoming_events_tab", "upcoming_events_title_line",
-                                                             "HLine", 10, 65, 600, 6)
+                                                             "HLine", 10, 65, 580, 6)
 
         self.student_calendar = QCalendarWidget(self.upcoming_events_tab)
         self.student_calendar.setGeometry(20, 80, 450, 450)
 
-        self.student_calendar.setStyleSheet("QCalendarWidget { border-radius: 10px; }")
+        self.student_calendar.setStyleSheet("QCalendarWidget { border-radius: 10px;}")
 
         self.student_calendar.selectionChanged.connect(self.student_upcoming_events_calendar)
 
@@ -941,12 +1039,12 @@ class Main(object):
 
         # Points Tab
         self.points_label = self.create_QLabel("points_tab", "points_label", "Points", 20, 20, 600, 50)
-        self.points_title_line = self.create_QFrame("points_tab", "points_title_line", "HLine", 10, 65, 600, 6)
+        self.points_title_line = self.create_QFrame("points_tab", "points_title_line", "HLine", 10, 65, 580, 6)
 
         # combo boxes and stars
 
         self.event_combobox = QComboBox(self.points_tab)
-        self.event_combobox.setGeometry(QtCore.QRect(30, 100, 170, 50))
+        self.event_combobox.setGeometry(QtCore.QRect(30, 100, 170, 30))
         # Connect to the database
         sqliteConnection = sqlite3.connect('identifier.sqlite')
         cursor = sqliteConnection.cursor()
@@ -970,7 +1068,7 @@ class Main(object):
         # stars/ rating
 
         self.rating_combobox = QComboBox(self.points_tab)
-        self.rating_combobox.setGeometry(QtCore.QRect(300, 100, 170, 50))
+        self.rating_combobox.setGeometry(QtCore.QRect(300, 100, 170, 30))
         self.rating_combobox.addItem("Rate Event")
         self.rating_combobox.addItem("⭐⭐⭐⭐⭐" + " --> Amazing")
         self.rating_combobox.addItem("⭐⭐⭐⭐" + " --> Good")
@@ -988,9 +1086,11 @@ class Main(object):
         self.QPushButton = QtWidgets.QPushButton(self.points_tab)
         self.QPushButton.setText("Send For Approval")
         self.QPushButton.setAccessibleName("push_button")
+        self.QPushButton.setIcon(QIcon(r"Application Pictures and Icons\send.svg"))
         self.QPushButton.clicked.connect(self.update_points)
         self.QPushButton.clicked.connect(self.send_approval)
         self.QPushButton.setGeometry(75, 470, 350, 50)
+        self.QPushButton.setStyleSheet(PROFILE_BUTTON_STYLESHEET)
 
         self.points_leaderboard_objects = self.create_QScrollArea("points_tab", "points_leaderboard_QScrollArea",
                                                                   "vertical_layout", 600, 130, 350, 350)
@@ -1072,7 +1172,7 @@ class Main(object):
             self.int_points_list.append(points)
 
         self.rewards_label = self.create_QLabel("rewards_tab", "rewards_label", "Rewards", 20, 20, 600, 50)
-        self.rewards_title_line = self.create_QFrame("rewards_tab", "rewards_title_line", "HLine", 10, 65, 600, 6)
+        self.rewards_title_line = self.create_QFrame("rewards_tab", "rewards_title_line", "HLine", 10, 65, 580, 6)
         self.rewards_my_points_label = self.create_QLabel("rewards_tab", "rewards_my_points_label",
                                                           "  Your Points: " + str(self.user_points), 680, 40, 300, 30)
 
@@ -1106,9 +1206,14 @@ class Main(object):
                     self.picture.setGeometry(10, 40, 170, 200)
                     self.picture.setPixmap(QPixmap(self.picture_list[index][0]))
                     self.button = QPushButton(self.event_object)
-                    self.button.setText("Redeem " + self.name_list[index][0])
+                    self.button.setText("   Redeem " + self.name_list[index][0])
+                    #self.button.setStyleSheet()
+                    size = QSize(25,25)
+                    self.button.setIconSize(size)
                     self.button.setGeometry(10, 250, 280, 40)
                     self.button.clicked.connect(lambda index=index: self.deduct_points(index))
+                    self.button.setIcon(QIcon(r"Application Pictures and Icons\baseline-redeem.svg"))
+                    self.button.setStyleSheet(REDEEM_BUTTON_STYLESHEET)
 
                     self.rewards_layout.addWidget(self.event_object, i, j)
                     index += 1
@@ -1122,7 +1227,7 @@ class Main(object):
         self.student_profile_label = self.create_QLabel("student_profile_tab", "student_profile_label", "My Profile",
                                                         20, 20, 600, 50)
         self.student_profile_title_line = self.create_QFrame("student_profile_tab", "student_profile_title_line",
-                                                             "HLine", 10, 65, 600, 6)
+                                                             "HLine", 10, 65, 580, 6)
         self.student_profile_data = self.create_QTextEdit("student_profile_tab", "student_profile_data", True, 645, 80,
                                                           300, 250)
         self.student_profile_data_label = self.create_QLabel("student_profile_tab", "student_profile_data_label",
@@ -1132,29 +1237,36 @@ class Main(object):
             self.events_attended) + '\n\n Points: ' + str(self.user_points))
 
         self.student_report_button = QtWidgets.QPushButton(self.student_profile_tab)
-        self.student_report_button.setText("Generate Student Report")
+        self.student_report_button.setText("    Generate Student Report")
         self.student_report_button.setGeometry(645, 350, 300, 50)
+        self.student_report_button.setIcon(QIcon(r"Application Pictures and Icons\file-pdf.svg"))
         self.student_report_button.clicked.connect(self.generate_report)
+        self.student_report_button.setStyleSheet(PROFILE_BUTTON_STYLESHEET)
 
         # User documentation
         self.pdf_button = QtWidgets.QPushButton(self.student_profile_tab)
-        self.pdf_button.setText("User Documentation")
+        self.pdf_button.setText("    User Documentation")
         self.pdf_button.setGeometry(645, 420, 300, 50)
+        self.pdf_button.setIcon(QIcon(r"Application Pictures and Icons\document-bold.svg"))
         self.pdf_button.clicked.connect(self.open_google_link)
+        self.pdf_button.setStyleSheet(PROFILE_BUTTON_STYLESHEET)
 
         self.sources_button = QtWidgets.QPushButton(self.student_profile_tab)
-        self.sources_button.setText("Sources,  Licenses,  and References")
+        self.sources_button.setText("  Sources, Licenses, and References")
         self.sources_button.setGeometry(645, 490, 300, 50)
+        self.sources_button.setIcon(QIcon(r"Application Pictures and Icons\book-reference.svg"))
         self.sources_button.clicked.connect(self.open_sources_link)
+        self.sources_button.setStyleSheet(PROFILE_BUTTON_STYLESHEET)
 
         self.message_box = QTextBrowser(self.student_profile_tab)
         self.message_box.setGeometry(10, 100, 480, 400)
         self.input_box = QLineEdit(self.student_profile_tab)
         self.input_box.setGeometry(10, 510, 380, 30)
-        self.send_button = QPushButton("Send", self.student_profile_tab)
+        self.send_button = QPushButton(" Send", self.student_profile_tab)
         self.send_button.setGeometry(400, 510, 80, 30)
-
+        self.send_button.setIcon(QIcon(r"Application Pictures and Icons\send.svg"))
         self.send_button.clicked.connect(self.send_message)
+        self.send_button.setStyleSheet(SEND_BUTTON_STYLESHEET)
 
         # Load chat history
         self.load_chat_history()
@@ -1206,6 +1318,7 @@ class Main(object):
 
         self.other_questions_button = QtWidgets.QPushButton(self.faq_tab)
         self.other_questions_button.setText("Other questions?")
+        self.other_questions_button.setStyleSheet(SEND_BUTTON_STYLESHEET)
         self.other_questions_button.setGeometry(720, 20, 200, 30)
         self.other_questions_button.clicked.connect(self.show_question_popup)
         # end faq
@@ -2008,11 +2121,11 @@ class Main(object):
         self.admin_student_view_tab = QtWidgets.QWidget()
         self.admin_student_support_tab = QtWidgets.QWidget()
 
-        self.tab_widget.addTab(self.admin_dashboard_tab, "Dashboard")
-        self.tab_widget.addTab(self.admin_events_tab, "Events")
-        self.tab_widget.addTab(self.admin_statistics_tab, "Statistics")
-        self.tab_widget.addTab(self.admin_student_view_tab, "Student View")
-        self.tab_widget.addTab(self.admin_student_support_tab, "Student Support")
+        self.tab_widget.addTab(self.admin_dashboard_tab, QIcon(r"Application Pictures and Icons\dashboard-solid-badged.svg"), "Dashboard           ")
+        self.tab_widget.addTab(self.admin_events_tab, QIcon(r"Application Pictures and Icons\calendar-fill.svg"), "Events             ")
+        self.tab_widget.addTab(self.admin_statistics_tab, QIcon(r"Application Pictures and Icons\statistics.svg"), "Statistics         ")
+        self.tab_widget.addTab(self.admin_student_view_tab, QIcon(r"Application Pictures and Icons\profile-fill.svg"), "Student View       ")
+        self.tab_widget.addTab(self.admin_student_support_tab, QIcon(r"Application Pictures and Icons\support.svg"), "Student Support    ")
 
         self.count = 0
 
@@ -2040,13 +2153,17 @@ class Main(object):
         self.admin_day_events_label.setText("Events on: " + self.admin_current_day[4:] + ":")
         self.admin_current_events.setAlignment(Qt.AlignTop)
 
-        self.add_event_button = QtWidgets.QPushButton("Add Event", self.admin_events_tab)
+        self.add_event_button = QtWidgets.QPushButton("    Add Event", self.admin_events_tab)
         self.add_event_button.setGeometry(QtCore.QRect(560, 460, 365, 40))
+        self.add_event_button.setIcon(QIcon(r"Application Pictures and Icons\event-add.svg"))
         self.add_event_button.clicked.connect(self.add_event_button_clicked)
+        self.add_event_button.setStyleSheet(SEND_BUTTON_STYLESHEET)
 
-        self.add_rewards_button = QtWidgets.QPushButton("Add Rewards", self.admin_events_tab)
+        self.add_rewards_button = QtWidgets.QPushButton("  Add Rewards", self.admin_events_tab)
         self.add_rewards_button.setGeometry(QtCore.QRect(560, 510, 365, 40))
+        self.add_rewards_button.setIcon(QIcon(r"Application Pictures and Icons\reward-13-filled.svg"))
         self.add_rewards_button.clicked.connect(self.add_rewards_button_clicked)
+        self.add_rewards_button.setStyleSheet(SEND_BUTTON_STYLESHEET)
 
         # ADMIN STATISTICS TAB
         self.admin_statistics_label = self.create_QLabel("admin_statistics_tab", "admin_statistics_label", "Statistics",
@@ -2100,8 +2217,10 @@ class Main(object):
         self.admin_leaderboard_scrollArea.verticalScrollBar().setSliderPosition(0)
 
         self.choose_rand_winner = QtWidgets.QPushButton(self.admin_statistics_tab)
-        self.choose_rand_winner.setText("Select a Random Winner")
+        self.choose_rand_winner.setText("  Select a Random Winner")
         self.choose_rand_winner.setGeometry(500, 100, 300, 30)
+        self.choose_rand_winner.setIcon(QIcon(r"Application Pictures and Icons\trophy.svg"))
+        self.choose_rand_winner.setStyleSheet(SEND_BUTTON_STYLESHEET)
         self.choose_rand_winner.clicked.connect(self.rand_win_nine)
         self.choose_rand_winner.clicked.connect(self.rand_win_ten)
         self.choose_rand_winner.clicked.connect(self.rand_win_eleven)
@@ -2131,6 +2250,8 @@ class Main(object):
         self.choose_top_winner = QtWidgets.QPushButton(self.admin_statistics_tab)
         self.choose_top_winner.setText("Select Winner with Most Points")
         self.choose_top_winner.setGeometry(500, 400, 300, 30)
+        self.choose_top_winner.setIcon(QIcon(r"Application Pictures and Icons\trophy.svg"))
+        self.choose_top_winner.setStyleSheet(SEND_BUTTON_STYLESHEET)
         self.choose_top_winner.clicked.connect(self.top_win)
 
         self.top_win_gb = QtWidgets.QGroupBox(self.admin_statistics_tab)
@@ -2201,9 +2322,9 @@ class Main(object):
         admin_info_text_edit.append(admin_info)
         admin_info_text_edit.setReadOnly(True)
         # Create buttons
-        admin_report = QtWidgets.QPushButton("Admin Output reports", self.admin_student_view_tab)
-        admin_documentation = QtWidgets.QPushButton("Admin User Documentation", self.admin_student_view_tab)
-        admin_sources = QtWidgets.QPushButton("Sources, Licenses and References", self.admin_student_view_tab)
+        admin_report = QtWidgets.QPushButton("  Admin Output reports", self.admin_student_view_tab)
+        admin_documentation = QtWidgets.QPushButton("  Admin User Documentation", self.admin_student_view_tab)
+        admin_sources = QtWidgets.QPushButton("  Sources, Licenses and References", self.admin_student_view_tab)
 
         # Set button positions
         admin_report.setGeometry(700, 350, 250, 50)
@@ -2214,6 +2335,14 @@ class Main(object):
         admin_report.clicked.connect(self.admin_output_reports)
         admin_documentation.clicked.connect(self.admin_user_documentation)
         admin_sources.clicked.connect(self.open_sources_link)
+
+        admin_report.setIcon(QIcon(r"Application Pictures and Icons\file-pdf.svg"))
+        admin_documentation.setIcon(QIcon(r"Application Pictures and Icons\document-bold.svg"))
+        admin_sources.setIcon(QIcon(r"Application Pictures and Icons\book-reference.svg"))
+
+        admin_report.setStyleSheet(PROFILE_BUTTON_STYLESHEET)
+        admin_documentation.setStyleSheet(PROFILE_BUTTON_STYLESHEET)
+        admin_sources.setStyleSheet(PROFILE_BUTTON_STYLESHEET)
 
         # End of Admin Student View
         self.send_annoucements_label = self.create_QLabel("admin_dashboard_tab", "adminApprovalBlue",
@@ -2249,15 +2378,19 @@ class Main(object):
         self.annoucement_detail.setWordWrapMode(True)
 
         self.send_annnouncement_button = QtWidgets.QPushButton(self.admin_dashboard_tab)
-        self.send_annnouncement_button.setText("Send Announcement")
+        self.send_annnouncement_button.setText("  Send Announcement")
         self.send_annnouncement_button.setGeometry(10, 500, 450, 50)
+        self.send_annnouncement_button.setIcon(QIcon(r"Application Pictures and Icons\announcement.svg"))
         self.send_annnouncement_button.clicked.connect(self.send_annoucement)
+        self.send_annnouncement_button.setStyleSheet(PROFILE_BUTTON_STYLESHEET)
 
         # file upload
         self.upload_image_button = QtWidgets.QPushButton(self.admin_dashboard_tab)
-        self.upload_image_button.setText("Upload Image")
+        self.upload_image_button.setText("  Upload Image")
         self.upload_image_button.setGeometry(350, 150, 150, 30)
+        self.upload_image_button.setIcon(QIcon(r"Application Pictures and Icons\upload.svg"))
         self.upload_image_button.clicked.connect(self.upload_image)
+        self.upload_image_button.setStyleSheet(SEND_BUTTON_STYLESHEET)
 
         self.adminApprovalLine = self.create_QFrame("admin_dashboard_tab", "adminApprovalLine", "HLine", 10, 65, 600, 6)
 
@@ -2295,15 +2428,17 @@ class Main(object):
             description_label.setWordWrap(True)  # enable word wrapping for the description label
 
             button_layout = QVBoxLayout()  # create a vertical layout for the buttons
-            approve_button = QPushButton("Approve")  # create an "Approve" button for the row
+            approve_button = QPushButton("  Approve")  # create an "Approve" button for the row
             approve_button.setFixedSize(100, 30)  # set the size of the button
+            approve_button.setIcon(QIcon(r"Application Pictures and Icons\thumb-up-green.svg"))
             approve_button.setProperty("row",
                                        approval)  # set the "row" property of the button to the current approval row
             approve_button.clicked.connect(lambda _, btn=approve_button: self.approved_points(btn))
             button_layout.addWidget(approve_button)  # add the approve button to the button layout
 
-            deny_button = QPushButton("Deny")  # create a "Deny" button for the row
+            deny_button = QPushButton("  Deny     ")  # create a "Deny" button for the row
             deny_button.setFixedSize(100, 30)  # set the size of the button
+            deny_button.setIcon(QIcon(r"Application Pictures and Icons\thumb-up-red.svg"))
             deny_button.setProperty("row", approval)  # set the "row" property of the button to the current approval row
             deny_button.clicked.connect(lambda _, btn=deny_button: self.denied_points(btn))
             button_layout.addWidget(deny_button)  # add the deny button to the button layout
@@ -2351,15 +2486,18 @@ class Main(object):
             message_text = question[4]
 
             text_edit = QTextEdit(scroll_content)
-            text_edit.setFixedSize(200, 200)
+            text_edit.setFixedSize(220, 200)
             text_edit.setReadOnly(True)
             text_edit.setPlainText(
                 f"Name: {faq_name}\n\nGrade: {faq_grade}\n\nEmail: {faq_email}\n\nTitle: {title_text}\n\nMessage: {message_text}")
             scroll_layout.addWidget(text_edit)
 
-            resolved_button = QPushButton("Resolved")
+            resolved_button = QPushButton("  Resolved")
             resolved_button.setObjectName("resolved_button")
             resolved_button.setFixedWidth(text_edit.width())
+            resolved_button.setFixedHeight(30)
+            resolved_button.setIcon(QIcon(r"Application Pictures and Icons\check-fat-fill.svg"))
+            resolved_button.setStyleSheet(RESOLVED_BUTTON_STYLESHEET)
             resolved_button.clicked.connect(lambda _, te=text_edit: self.resolve_question(te))
             scroll_layout.addWidget(resolved_button)
 
@@ -2374,7 +2512,9 @@ class Main(object):
 
         send_button = QPushButton("Send", self.admin_student_support_tab)
         send_button.setGeometry(530, 500, 90, 30)
+        send_button.setIcon(QIcon("Application Pictures and Icons\send.svg"))
         send_button.clicked.connect(self.send_message_admin)
+        send_button.setStyleSheet(SEND_BUTTON_STYLESHEET)
 
         self.load_chat_history()
 
