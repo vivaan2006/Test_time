@@ -430,45 +430,48 @@ class Main(object):
                 sqliteConnection.close()
 
     def setup_forgot_password(self):
-        self.forgot_password_frame = QtWidgets.QFrame()
+        self.forgot_password_frame = QtWidgets.QLabel()
         self.forgot_password_frame.setWindowTitle("Forgot Password")
         self.forgot_password_frame.setFixedSize(800, 500)
         self.forgot_password_frame.move(108, 24)
+        self.forgot_password_frame.setPixmap(QPixmap(r"Application Pictures and Icons\Login Screen Background.png").scaledToWidth(800))
 
         self.forgot_password_label = self.create_QLabel("forgot_password_frame", "forgot_password_label",
-                                                        "Forgot Password", 20, 20, 600, 50)
-        self.forgot_password_line = self.create_QFrame("forgot_password_frame", "forgot_password_line", "HLine", 10, 65,
-                                                       600, 6)
+                                                        "Forgot Password", 20, 70, 600, 50)
+        # self.forgot_password_line = self.create_QFrame("forgot_password_frame", "forgot_password_line", "HLine", 10, 65,
+        #                                                600, 6)
 
-        self.email_label = self.create_QLabel("forgot_password_frame", "email_label", "Email", 300, 150, 80, 30)
+        self.email_label = self.create_QLabel("forgot_password_frame", "email_label", "Email", 20, 150, 80, 30)
 
         self.email_entry = QtWidgets.QLineEdit(self.forgot_password_frame)
-        self.email_entry.setGeometry(QtCore.QRect(380, 150, 150, 30))
+        self.email_entry.setGeometry(QtCore.QRect(200, 150, 170, 30))
 
-        self.email_search_button = QtWidgets.QPushButton("Search", self.forgot_password_frame)
-        self.email_search_button.setGeometry(QtCore.QRect(560, 150, 150, 30))
+        self.email_search_button = QtWidgets.QPushButton("  Search", self.forgot_password_frame)
+        self.email_search_button.setGeometry(QtCore.QRect(400, 150, 150, 30))
         self.email_search_button.clicked.connect(self.search_security_question)
+        self.email_search_button.setIcon(QIcon(r"Application Pictures and Icons\search-12-filled.svg"))
 
         self.security_question_label = self.create_QLabel("forgot_password_frame", "security_question_label",
-                                                          "Security Question", 185, 220, 200, 30)
+                                                          "Security Question", 20, 220, 200, 30)
 
         self.security_question_entry = QtWidgets.QLineEdit(self.forgot_password_frame)
-        self.security_question_entry.setGeometry(QtCore.QRect(380, 220, 350, 30))
+        self.security_question_entry.setGeometry(QtCore.QRect(200, 220, 350, 30))
 
-        self.answer_label = self.create_QLabel("forgot_password_frame", "answer_label", "Answer", 300, 290, 90, 30)
+        self.answer_label = self.create_QLabel("forgot_password_frame", "answer_label", "Answer", 20, 290, 90, 30)
 
         self.security_answer_entry = QtWidgets.QLineEdit(self.forgot_password_frame)
-        self.security_answer_entry.setGeometry(QtCore.QRect(380, 290, 150, 30))
+        self.security_answer_entry.setGeometry(QtCore.QRect(200, 290, 350, 30))
 
-        self.new_password_label = self.create_QLabel("forgot_password_frame", "new_password_label", "New Password", 220,
+        self.new_password_label = self.create_QLabel("forgot_password_frame", "new_password_label", "New Password", 20,
                                                      360, 150, 30)
 
         self.new_password_entry = QtWidgets.QLineEdit(self.forgot_password_frame)
-        self.new_password_entry.setGeometry(QtCore.QRect(380, 360, 150, 30))
+        self.new_password_entry.setGeometry(QtCore.QRect(200, 360, 350, 30))
 
         self.change_password_button = QtWidgets.QPushButton("Change Password", self.forgot_password_frame)
         self.change_password_button.setGeometry(QtCore.QRect(300, 420, 200, 30))
         self.change_password_button.clicked.connect(self.change_password)
+        self.change_password_button.setObjectName("student_login_button")
 
         self.forgot_password_frame.show()
 
@@ -642,50 +645,48 @@ class Main(object):
                 sqliteConnection.close()
 
     def admin_forgot_password_page(self):
-        self.forgot_password_frame = QtWidgets.QFrame()
+        self.forgot_password_frame = QtWidgets.QLabel()
         self.forgot_password_frame.setWindowTitle("Forgot Password")
         self.forgot_password_frame.setFixedSize(800, 500)
         self.forgot_password_frame.move(108, 24)
+        self.forgot_password_frame.setPixmap(QPixmap(r"Application Pictures and Icons\Login Screen Background.png").scaledToWidth(800))
 
         self.forgot_password_label = self.create_QLabel("forgot_password_frame", "forgot_password_label",
-                                                        "Forgot Password", 20, 20, 600, 50)
-        self.forgot_password_line = self.create_QFrame("forgot_password_frame", "forgot_password_line", "HLine", 10, 65,
-                                                       600, 6)
+                                                        "Forgot Password", 20, 70, 600, 50)
+        # self.forgot_password_line = self.create_QFrame("forgot_password_frame", "forgot_password_line", "HLine", 10, 65,
+        #                                                600, 6)
 
-        self.email_label = self.create_QLabel("forgot_password_frame", "email_label", "Email", 300, 150, 80, 30)
-        self.login_screen_logo = QtWidgets.QLabel(self.forgot_password_frame)
-        self.login_screen_logo.setFixedSize(200, 200)
-        self.login_screen_logo.move(-20, -75)
-        self.login_screen_logo.setScaledContents(True)
-        self.login_screen_logo.show()
+        self.email_label = self.create_QLabel("forgot_password_frame", "email_label", "Email", 20, 150, 80, 30)
 
-        self.admin_email_entry = QtWidgets.QLineEdit(self.forgot_password_frame)
-        self.admin_email_entry.setGeometry(QtCore.QRect(380, 150, 150, 30))
+        self.email_entry = QtWidgets.QLineEdit(self.forgot_password_frame)
+        self.email_entry.setGeometry(QtCore.QRect(200, 150, 170, 30))
 
-        self.email_search_button = QtWidgets.QPushButton("Search", self.forgot_password_frame)
-        self.email_search_button.setGeometry(QtCore.QRect(560, 150, 150, 30))
+        self.email_search_button = QtWidgets.QPushButton("  Search", self.forgot_password_frame)
+        self.email_search_button.setGeometry(QtCore.QRect(400, 150, 150, 30))
         self.email_search_button.clicked.connect(self.admin_security_question)
+        self.email_search_button.setIcon(QIcon(r"Application Pictures and Icons\search-12-filled.svg"))
 
         self.security_question_label = self.create_QLabel("forgot_password_frame", "security_question_label",
-                                                          "Security Question", 185, 220, 200, 30)
+                                                          "Security Question", 20, 220, 200, 30)
 
-        self.admin_security_question_entry = QtWidgets.QLineEdit(self.forgot_password_frame)
-        self.admin_security_question_entry.setGeometry(QtCore.QRect(380, 220, 350, 30))
+        self.security_question_entry = QtWidgets.QLineEdit(self.forgot_password_frame)
+        self.security_question_entry.setGeometry(QtCore.QRect(200, 220, 350, 30))
 
-        self.answer_label = self.create_QLabel("forgot_password_frame", "answer_label", "Answer", 300, 290, 90, 30)
+        self.answer_label = self.create_QLabel("forgot_password_frame", "answer_label", "Answer", 20, 290, 90, 30)
 
         self.security_answer_entry = QtWidgets.QLineEdit(self.forgot_password_frame)
-        self.security_answer_entry.setGeometry(QtCore.QRect(380, 290, 150, 30))
+        self.security_answer_entry.setGeometry(QtCore.QRect(200, 290, 350, 30))
 
-        self.new_password_label = self.create_QLabel("forgot_password_frame", "new_password_label", "New Password", 220,
+        self.new_password_label = self.create_QLabel("forgot_password_frame", "new_password_label", "New Password", 20,
                                                      360, 150, 30)
 
         self.new_password_entry = QtWidgets.QLineEdit(self.forgot_password_frame)
-        self.new_password_entry.setGeometry(QtCore.QRect(380, 360, 150, 30))
+        self.new_password_entry.setGeometry(QtCore.QRect(200, 360, 350, 30))
 
         self.change_password_button = QtWidgets.QPushButton("Change Password", self.forgot_password_frame)
         self.change_password_button.setGeometry(QtCore.QRect(300, 420, 200, 30))
         self.change_password_button.clicked.connect(self.change_admin_password)
+        self.change_password_button.setObjectName("student_login_button")
 
         self.forgot_password_frame.show()
 
@@ -2537,30 +2538,35 @@ class Main(object):
                                                       600, 6)
 
         self.name_field_label = self.create_QLabel("create_rewards_frame", "name_field_label",
-                                                   "Reward Name", 70, 120, 300, 30)
+                                                   "Reward Name", 45, 120, 300, 30)
 
         self.name_field = QtWidgets.QLineEdit(self.create_rewards_frame)
         self.name_field.setGeometry(QtCore.QRect(200, 120, 200, 30))
 
         self.reward_description_label = self.create_QLabel("create_rewards_frame", "reward_description_label",
-                                                           "Reward Description", 45, 200, 300, 30)
+                                                           "Reward Description", 45, 170, 300, 30)
         self.reward_description = QPlainTextEdit(self.create_rewards_frame)
-        self.reward_description.setGeometry(200, 200, 300, 150)
+        self.reward_description.setGeometry(200, 170, 300, 150)
 
         self.upload_rewards_image_button = QtWidgets.QPushButton(self.create_rewards_frame)
-        self.upload_rewards_image_button.setText("Upload Image")
+        self.upload_rewards_image_button.setText("  Upload Image")
         self.upload_rewards_image_button.setGeometry(450, 120, 150, 30)
+        self.upload_rewards_image_button.setIcon(QIcon(r"Application Pictures and Icons\image-add.svg"))
+        self.upload_rewards_image_button.setStyleSheet(SEND_BUTTON_STYLESHEET)
         self.upload_rewards_image_button.clicked.connect(self.upload_rewards_photo)
 
+
         self.points_value_label = self.create_QLabel("create_rewards_frame", "points_value_label",
-                                                     "Reward Points", 45, 370, 300, 30)
+                                                     "Reward Points", 45, 340, 300, 30)
         self.points_value = QLineEdit(self.create_rewards_frame)
-        self.points_value.setGeometry(200, 370, 200, 30)
+        self.points_value.setGeometry(200, 340, 200, 30)
 
         self.upload_rewards_button = QtWidgets.QPushButton(self.create_rewards_frame)
-        self.upload_rewards_button.setText("Upload Reward")
-        self.upload_rewards_button.setGeometry(300, 430, 200, 50)
+        self.upload_rewards_button.setText("  Upload Reward")
+        self.upload_rewards_button.setGeometry(300, 410, 200, 50)
+        self.upload_rewards_button.setIcon(QIcon(r"Application Pictures and Icons\reward-13-filled.svg"))
         self.upload_rewards_button.clicked.connect(self.upload_reward)
+        self.upload_rewards_button.setStyleSheet(PROFILE_BUTTON_STYLESHEET)
 
         self.create_rewards_frame.show()
 
@@ -3257,69 +3263,96 @@ class AddEventPopup(QDialog):
         super().__init__()
         self.setWindowTitle("Add Event")
         self.setParent(parent)
+        self.setFixedSize(500,300)
 
         self.name_label = QLabel("Name:")
         self.name_edit = QLineEdit()
+        self.name_edit.setFixedHeight(30)
 
         self.description_label = QLabel("Description:")
         self.description_edit = QLineEdit()
+        self.description_edit.setFixedHeight(30)
 
         self.address_label = QLabel("Address:")
         self.address_edit = QLineEdit()
+        self.address_edit.setFixedHeight(30)
 
         self.type_label = QLabel("Type:")
         self.type_edit = QLineEdit()
+        self.type_edit.setFixedHeight(30)
 
         self.points_label = QLabel("Points:")
         self.points_edit = QLineEdit()
+        self.points_edit.setFixedHeight(30)
 
         self.year_label = QLabel("Year:")
         self.year_edit = QLineEdit()
+        self.year_edit.setFixedHeight(30)
 
         self.month_label = QLabel("Month:")
         self.month_edit = QLineEdit()
+        self.month_edit.setFixedHeight(30)
 
         self.day_label = QLabel("Day:")
         self.day_edit = QLineEdit()
+        self.day_edit.setFixedHeight(30)
 
         self.latitude_label = QLabel("Latitude:")
         self.latitude_edit = QLineEdit()
+        self.latitude_edit.setFixedHeight(30)
 
         self.longitude_label = QLabel("Longitude:")
         self.longitude_edit = QLineEdit()
+        self.longitude_edit.setFixedHeight(30)
 
         self.image_label = QLabel("Image Link:")
         self.image_edit = QLineEdit()
+        self.image_edit.setFixedHeight(30)
 
         self.submit_button = QPushButton("Submit")
         self.submit_button.clicked.connect(self.submit_event)
+        self.submit_button.setFixedHeight(30)
+        self.submit_button.setStyleSheet(SEND_BUTTON_STYLESHEET)
 
-        layout = QVBoxLayout()
-        layout.addWidget(self.name_label)
-        layout.addWidget(self.name_edit)
-        layout.addWidget(self.description_label)
-        layout.addWidget(self.description_edit)
-        layout.addWidget(self.address_label)
-        layout.addWidget(self.address_edit)
-        layout.addWidget(self.type_label)
-        layout.addWidget(self.type_edit)
-        layout.addWidget(self.points_label)
-        layout.addWidget(self.points_edit)
-        layout.addWidget(self.year_label)
-        layout.addWidget(self.year_edit)
-        layout.addWidget(self.month_label)
-        layout.addWidget(self.month_edit)
-        layout.addWidget(self.day_label)
-        layout.addWidget(self.day_edit)
-        layout.addWidget(self.latitude_label)
-        layout.addWidget(self.latitude_edit)
-        layout.addWidget(self.longitude_label)
-        layout.addWidget(self.longitude_edit)
-        layout.addWidget(self.image_label)
-        layout.addWidget(self.image_edit)
-        layout.addWidget(self.submit_button)
+        grid_layout = QGridLayout(self)
 
-        self.setLayout(layout)
+        # Add widgets to the grid layout
+        grid_layout.addWidget(self.name_label, 0, 0)
+        grid_layout.addWidget(self.name_edit, 0, 1)
+
+        grid_layout.addWidget(self.description_label, 0, 2)
+        grid_layout.addWidget(self.description_edit, 0, 3)
+
+        grid_layout.addWidget(self.address_label, 1, 0)
+        grid_layout.addWidget(self.address_edit, 1, 1)
+
+        grid_layout.addWidget(self.type_label, 1, 2)
+        grid_layout.addWidget(self.type_edit, 1, 3)
+
+        grid_layout.addWidget(self.points_label, 2, 0)
+        grid_layout.addWidget(self.points_edit, 2, 1)
+
+        grid_layout.addWidget(self.year_label, 2, 2)
+        grid_layout.addWidget(self.year_edit, 2, 3)
+
+        grid_layout.addWidget(self.month_label, 3, 0)
+        grid_layout.addWidget(self.month_edit, 3, 1)
+
+        grid_layout.addWidget(self.day_label, 3, 2)
+        grid_layout.addWidget(self.day_edit, 3, 3)
+
+        grid_layout.addWidget(self.latitude_label, 4, 0)
+        grid_layout.addWidget(self.latitude_edit, 4, 1)
+
+        grid_layout.addWidget(self.longitude_label, 4, 2)
+        grid_layout.addWidget(self.longitude_edit, 4, 3)
+
+        grid_layout.addWidget(self.image_label, 5, 0)
+        grid_layout.addWidget(self.image_edit, 5, 1, 1, 3)  # Span three columns
+
+        grid_layout.addWidget(self.submit_button, 6, 0, 1, 4)  # Span four columns
+
+        self.setLayout(grid_layout)
 
     def submit_event(self):
         name = self.name_edit.text()

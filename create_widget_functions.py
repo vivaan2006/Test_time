@@ -386,23 +386,21 @@ class ChatGPTWindowWidget(QWidget):
     def send_prompt(self):
         text = self.line_edit.text()
         
-        # # Fetch user prompt      
+        # Fetch user prompt      
         self.add_prompt_widget(text)
 
-        # # Stop thread if already running
-        # try:
-        #     self.request_thread.exit()
-        # except:
-        #     pass
+        # Stop thread if already running
+        try:
+            self.request_thread.exit()
+        except:
+            pass
         
-        # # Create and start new thread
-        # self.request_thread = RequestThread()
-        # self.request_thread.prompt = text 
-        # self.request_thread.response_signal.connect(self.add_response_widget)
-        # self.request_thread.start()
-
-        self.add_response_widget(text)
-
+        # Create and start new thread
+        self.request_thread = RequestThread()
+        self.request_thread.prompt = text 
+        self.request_thread.response_signal.connect(self.add_response_widget)
+        self.request_thread.start()
+        
         self.line_edit.clear()
 
     def add_prompt_widget(self, text):

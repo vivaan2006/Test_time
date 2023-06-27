@@ -193,21 +193,27 @@ QFrame#student_report_line {
 }
 QLabel#forgot_password_label {
     font: bold 30px;
+    color:white;
 }
 QFrame#forgot_password_line {
     background-color:black;
+    color:white;
 }
 QLabel#email_label {
     font: bold 20px;
+    color:white;
 }
 QLabel#answer_label {
     font: bold 20px;
+    color:white;
 }
 QLabel#security_question_label {
-    font: bold 20px
+    font: bold 20px;
+    color:white;
 }
 QLabel#new_password_label {
     font: bold 20px;
+    color:white;
 }
 QLabel#student_account_label {
     font: bold 30px;
