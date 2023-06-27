@@ -1,7 +1,7 @@
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtCore import Qt, QThread, pyqtSignal
 from PyQt5.QtGui import QIcon, QPixmap, QFontMetrics
-from PyQt5.QtWidgets import QSpacerItem, QSizePolicy, QLabel, QListWidgetItem, QTabWidget, QTabBar, QStylePainter, QStyleOptionTab, QStyle, QComboBox, QVBoxLayout, QHBoxLayout, QScrollArea, QTextEdit, QLineEdit, QPushButton, QWidget, QListWidget
+from PyQt5.QtWidgets import QSpacerItem, QGraphicsDropShadowEffect, QSizePolicy, QLabel, QListWidgetItem, QTabWidget, QTabBar, QStylePainter, QStyleOptionTab, QStyle, QComboBox, QVBoxLayout, QHBoxLayout, QScrollArea, QTextEdit, QLineEdit, QPushButton, QWidget, QListWidget
 
 import openai
 
@@ -321,7 +321,16 @@ class VerticalTabWidget(QTabWidget):
         QTabWidget.__init__(self, *args, **kwargs)
         self.setTabBar(TabBar())
         self.setTabPosition(QtWidgets.QTabWidget.West)
-        self.setStyleSheet("QTabBar::tab { height: 180px; width: 50px;}")
+        self.setStyleSheet("""
+            QTabBar::tab {
+                height: 180px;
+                width: 50px;
+                background-color: #202020;
+                color: white;
+                font-size:10pt;
+            }
+            """
+        )
         #self.setStyleSheet("QTabBar::tab {width: 50px;}")
 
 
@@ -336,13 +345,17 @@ class ChatGPTWindowWidget(QWidget):
     def init_ui(self):
         layout = QVBoxLayout()
 
+        shadow1 = QGraphicsDropShadowEffect()
+        shadow1.setBlurRadius(20)
+
         self.list_widget = QListWidget()
+        self.list_widget.setGraphicsEffect(shadow1)
         self.line_edit = QLineEdit()
         self.line_edit.setPlaceholderText("Ask Me Anything...")
 
         self.line_edit.setFixedHeight(30)
 
-        self.line_edit.setStyleSheet("border-radius:5px; font-size: 10pt")
+        self.line_edit.setStyleSheet("border-radius:5px; font-size: 10pt; border: 1px solid gray")
         
         # Enable the clear button in the QLineEdit
         self.line_edit.setClearButtonEnabled(False)
@@ -356,7 +369,12 @@ class ChatGPTWindowWidget(QWidget):
         # Connect a slot to the triggered signal of the action
         action.triggered.connect(self.send_prompt)
 
+         # creating a QGraphicsDropShadowEffect object
+        shadow = QGraphicsDropShadowEffect()
+        shadow.setBlurRadius(10)
+
         self.line_edit.returnPressed.connect(self.send_prompt)
+        self.line_edit.setGraphicsEffect(shadow)
 
         layout.addWidget(self.list_widget)
         layout.addWidget(self.line_edit)
@@ -382,7 +400,7 @@ class ChatGPTWindowWidget(QWidget):
         self.request_thread.prompt = text 
         self.request_thread.response_signal.connect(self.add_response_widget)
         self.request_thread.start()
-
+        
         self.line_edit.clear()
 
     def add_prompt_widget(self, text):
@@ -421,8 +439,9 @@ class ChatGPTPromptWidget(QWidget):
 
         # Create an image label and add it to the layout
         image_label = QLabel(self)
+        image_label.setStyleSheet("background-color:None")
         pixmap = QPixmap(r'ChatGPT Icons/user.png')  # Provide the path to your image file
-        image_label.setPixmap(pixmap.scaledToHeight(30))
+        image_label.setPixmap(pixmap.scaledToHeight(50))
         image_label.setStyleSheet("padding-top:0px")
 
         spacer = QSpacerItem(40, 20, QSizePolicy.Minimum, QSizePolicy.Expanding)
@@ -461,8 +480,8 @@ class ChatGPTResponseWidget(QWidget):
 
         # Create an image label and add it to the layout
         image_label = QLabel(self)
-        pixmap = QPixmap(r'ChatGPT Icons/chatgpt-icon.png')  # Provide the path to your image file
-        image_label.setPixmap(pixmap.scaledToHeight(100))
+        pixmap = QPixmap(r'ChatGPT Icons/chatbot.png')  # Provide the path to your image file
+        image_label.setPixmap(pixmap.scaledToHeight(50))
         image_label.setStyleSheet("padding-top:0px")
 
         spacer = QSpacerItem(40, 20, QSizePolicy.Minimum, QSizePolicy.Expanding)
